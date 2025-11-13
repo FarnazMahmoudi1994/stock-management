@@ -1,8 +1,9 @@
 package com.example.stock_manager.transaction;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -12,6 +13,15 @@ public class TransactionController {
 
     private final ITransactionService transactionService;
     private final TransactionMapper transactionMapper;
+
+    @PostMapping
+    public ResponseEntity purchaseProduct(@RequestBody TransactionDTO transactionDTO){
+
+        Transaction transaction = transactionMapper.toTransaction(transactionDTO);
+        transactionService.purchaseProduct(transaction);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
 
 }

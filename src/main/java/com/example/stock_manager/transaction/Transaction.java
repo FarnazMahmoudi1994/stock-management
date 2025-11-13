@@ -17,6 +17,10 @@ public class Transaction extends BaseEntity {
     private Type type;
 
     @NotNull
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    @NotNull
     @JoinColumn(name = "product_id")
     @ManyToOne
     public Product product;

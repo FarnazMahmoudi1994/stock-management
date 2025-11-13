@@ -16,5 +16,19 @@ public class StockService implements IStockService {
                 .orElseThrow(() -> new NotFoundException("","موجود نیست"));
     }
 
+    @Override
+    public Stock getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("stock","not found"));
+    }
+
+    @Override
+    public Stock update(Stock stock) {
+        Stock lastStock = getById(stock.getId());
+        lastStock.setStockCount(stock.getStockCount());
+        lastStock.setProduct(stock.getProduct());
+        return repository.save(lastStock);
+    }
+
 
 }
