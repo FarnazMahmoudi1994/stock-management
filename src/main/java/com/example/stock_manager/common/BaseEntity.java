@@ -1,6 +1,10 @@
 package com.example.stock_manager.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,7 +17,9 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
 @Data
-
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
