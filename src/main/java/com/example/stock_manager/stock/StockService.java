@@ -13,7 +13,7 @@ public class StockService implements IStockService {
     @Override
     public Stock getByProductId(Long productId) {
         return repository.findByProductId(productId)
-                .orElseThrow(() -> new NotFoundException("","موجود نیست"));
+                .orElseThrow(() -> new NotFoundException("","not found"));
     }
 
     @Override
