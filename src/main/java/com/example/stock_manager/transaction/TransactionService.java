@@ -25,15 +25,19 @@ public class TransactionService implements ITransactionService {
         Integer stockCount = product.getStock().getStockCount();
         Stock stock = product.getStock();
         Integer requestQuantity= transaction.getQuantity();
-        if(stockCount < transaction.getQuantity()){
-            throw new IllegalArgumentException();
-        }
 
-        decreaseStock(stock, stockCount, requestQuantity);
+        switch (transaction.getType()) {
+            case IN ->  increaseStock(stock, stockCount, requestQuantity);
+            case OUT -> {
+                if(stockCount < transaction.getQuantity()){
+                    throw new IllegalArgumentException();
+                }
+                decreaseStock(stock, stockCount, requestQuantity);
+            }
+        }
 
         //save transaction
         transaction.setProduct(product);
-        transaction.setType(Type.OUT);
         return repository.save(transaction);
     }
 
@@ -44,5 +48,11 @@ public class TransactionService implements ITransactionService {
         stockService.update(stock);
     }
 
+
+    public void increaseStock(Stock stock, Integer stockCount, Integer requestQuantity){
+        Integer newStockCount = stockCount + requestQuantity;
+        stock.setStockCount(newStockCount);
+        stockService.update(stock);
+    }
 
 }
