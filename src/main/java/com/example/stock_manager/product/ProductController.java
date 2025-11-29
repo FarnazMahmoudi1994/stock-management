@@ -1,5 +1,6 @@
 package com.example.stock_manager.product;
 
+import com.example.stock_manager.stock.StockCountProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getById(@PathVariable(required = false, name = "id") Long id ){
+    public ResponseEntity<ProductProjection> getById(@PathVariable(required = false, name = "id") Long id ){
+        ProductProjection productProjection = productService.getByProductId(id);
+        return ResponseEntity.ok(productProjection);
+    }
 
-        Product product = productService.getById(id);
-        Integer stockCount = productService.getStockCount(id);
-        ProductResponseDTO productResponseDTO = productMapper.toProductResponseDTO(product);
-        productResponseDTO.setStockCount(stockCount);
-        return ResponseEntity.ok(productResponseDTO);
+    @GetMapping("/get_stock_count/{id}")
+    public ResponseEntity<StockCountProjection> getStockCountById(@PathVariable(required = false, name = "id") Long id ){
+        StockCountProjection stockCountProjection = productService.getStockCount(id);
+        return ResponseEntity.ok(stockCountProjection);
     }
 
 

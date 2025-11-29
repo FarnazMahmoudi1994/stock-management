@@ -2,6 +2,7 @@ package com.example.stock_manager.product;
 
 import com.example.stock_manager.common.exception.NotFoundException;
 import com.example.stock_manager.stock.Stock;
+import com.example.stock_manager.stock.StockCountProjection;
 import com.example.stock_manager.stock.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,9 @@ public class ProductService implements IProductService {
     @Transactional
     @Override
     public Product save(Product product) {
+
         Stock stock = Stock.builder()
-                .stockCount(100)
+                .stockCount(0)
                 .product(product)
                 .build();
         product.setStock(stock);
@@ -33,13 +35,18 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Integer getStockCount(Long id) {
+    public StockCountProjection getStockCount(Long id) {
         getById(id);
-        Integer stockCount =  stockRepository.findStockCountByProductId(id);
+        StockCountProjection stockCount =  stockRepository.findStockCountProjectionByProductId(id);
         if (stockCount == null) {
             throw new NotFoundException(String.valueOf(id), "stock not found for product");
         }
         return stockCount;
+    }
+
+    @Override
+    public ProductProjection getByProductId(Long id) {
+        return repository.findByProductId(id);
     }
 
 

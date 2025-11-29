@@ -1,9 +1,9 @@
 package com.example.stock_manager.transaction;
 
-import com.example.stock_manager.product.IProductService;
 import com.example.stock_manager.product.Product;
-import com.example.stock_manager.stock.IStockService;
+import com.example.stock_manager.product.ProductRepository;
 import com.example.stock_manager.stock.Stock;
+import com.example.stock_manager.stock.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,17 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionService implements ITransactionService {
 
     private final TransactionRepository repository;
-    private final IProductService productService;
-    private final IStockService stockService;
+    private final StockRepository stockRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
     @Override
     public Transaction purchaseProduct(Transaction transaction) {
-        Long productId = transaction.getProduct().getId();
-        Product product = productService.getById(productId);
 
-        Integer stockCount = product.getStock().getStockCount();
+        Long productId = transaction.getProduct().getId();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + productId));
+        transaction.setProduct(product);
+        Transaction savedTransaction = repository.save(transaction);
         Stock stock = product.getStock();
+        Integer stockCount = stock.getStockCount();
         Integer requestQuantity= transaction.getQuantity();
 
         switch (transaction.getType()) {
@@ -36,23 +39,21 @@ public class TransactionService implements ITransactionService {
             }
         }
 
-        //save transaction
-        transaction.setProduct(product);
-        return repository.save(transaction);
+        return savedTransaction;
     }
 
 
     public void decreaseStock(Stock stock, Integer stockCount, Integer requestQuantity){
         Integer newStockCount = stockCount - requestQuantity;
         stock.setStockCount(newStockCount);
-        stockService.update(stock);
+        stockRepository.save(stock);
     }
 
 
     public void increaseStock(Stock stock, Integer stockCount, Integer requestQuantity){
         Integer newStockCount = stockCount + requestQuantity;
         stock.setStockCount(newStockCount);
-        stockService.update(stock);
+        stockRepository.save(stock);
     }
 
 }

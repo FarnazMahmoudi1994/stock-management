@@ -3,7 +3,6 @@ package com.example.stock_manager.product;
 import com.example.stock_manager.common.BaseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -12,9 +11,7 @@ import java.math.BigDecimal;
 @Data
 public class ProductRequestDTO extends BaseDTO {
 
-    @NotNull
     @NotBlank
-    @NotEmpty
     private String name;
 
     @Schema(maxLength = 10000)

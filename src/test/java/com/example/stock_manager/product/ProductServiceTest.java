@@ -2,6 +2,7 @@ package com.example.stock_manager.product;
 
 import com.example.stock_manager.common.exception.NotFoundException;
 import com.example.stock_manager.stock.Stock;
+import com.example.stock_manager.stock.StockCountProjection;
 import com.example.stock_manager.stock.StockRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -92,20 +94,20 @@ class ProductServiceTest {
     void getStockCount() {
         //given
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(stockRepository.findStockCountByProductId(1L)).thenReturn(stock.getStockCount());
+        when(stockRepository.findStockCountProjectionByProductId(1L)).thenReturn(any());
 
         //when
-        Integer result = underTest.getStockCount(1L);
+        StockCountProjection result = underTest.getStockCount(1L);
 
         //then
-        assertEquals(result, stock.getStockCount());
+        assertEquals(result.getStockCount(), stock.getStockCount());
     }
 
     @Test
     void getStockCount_notFound() {
         //given
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(stockRepository.findStockCountByProductId(1L)).thenReturn(null);
+        when(stockRepository.findStockCountProjectionByProductId(1L)).thenReturn(null);
 
         //when
         var response = assertThatThrownBy(() -> underTest.getStockCount(1L));
