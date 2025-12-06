@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotFoundException extends RuntimeException {
+public class IllegalStateException extends RuntimeException {
 
     private String value;
 
-    public NotFoundException(String value, String message) {
+    public IllegalStateException(String value, String message) {
         super(message);
         this.value = value;
     }

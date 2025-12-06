@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotFoundException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
 
     private String value;
 
-    public NotFoundException(String value, String message) {
+    public BadRequestException(String value, String message) {
         super(message);
         this.value = value;
     }
