@@ -1,6 +1,7 @@
 package com.example.stock_manager.product;
 
 import com.example.stock_manager.common.BaseEntity;
+import com.example.stock_manager.reservation.Reservation;
 import com.example.stock_manager.stock.Stock;
 import com.example.stock_manager.transaction.Transaction;
 import jakarta.persistence.*;
@@ -38,4 +39,7 @@ public class Product extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product",cascade = CascadeType.ALL)
     private List<Transaction> transactions;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 }

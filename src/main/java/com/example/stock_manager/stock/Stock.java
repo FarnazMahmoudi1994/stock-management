@@ -1,6 +1,5 @@
 package com.example.stock_manager.stock;
 
-
 import com.example.stock_manager.common.BaseEntity;
 import com.example.stock_manager.product.Product;
 import jakarta.persistence.*;
@@ -21,6 +20,10 @@ public class Stock extends BaseEntity {
     @NotNull
     @Column(name = "stock_count")
     private Integer stockCount;
+
+    @NotNull
+    @Column(name = "reserved_count")
+    private Integer reservedCount;
 
     @OneToOne
     @JoinColumn(name = "product_id",unique = true)

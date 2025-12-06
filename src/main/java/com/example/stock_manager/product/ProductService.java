@@ -21,6 +21,7 @@ public class ProductService implements IProductService {
 
         Stock stock = Stock.builder()
                 .stockCount(0)
+                .reservedCount(0)
                 .product(product)
                 .build();
         product.setStock(stock);
@@ -46,7 +47,11 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductProjection getByProductId(Long id) {
-        return repository.findByProductId(id);
+        ProductProjection productProjection = repository.findByProductId(id);
+        if (productProjection == null) {
+            throw new NotFoundException("", "product not found");
+        }
+        return productProjection;
     }
 
 

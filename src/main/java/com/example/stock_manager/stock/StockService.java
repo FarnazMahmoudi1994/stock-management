@@ -30,5 +30,11 @@ public class StockService implements IStockService {
         return repository.save(lastStock);
     }
 
+    public Integer getSalableInventory(Long productId){
+       Stock stock = getByProductId(productId);
+
+        return stock.getStockCount() - stock.getReservedCount();
+    }
+
 
 }

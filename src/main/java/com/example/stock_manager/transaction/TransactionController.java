@@ -1,5 +1,6 @@
 package com.example.stock_manager.transaction;
 
+import com.example.stock_manager.common.ResponseHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ public class TransactionController {
     public ResponseEntity purchaseProduct(@RequestBody TransactionDTO transactionDTO){
 
         Transaction transaction = transactionMapper.toTransaction(transactionDTO);
-        transactionService.purchaseProduct(transaction);
+        transactionService.purchaseProduct(transaction, false);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseHandler.generateResponseMessage(HttpStatus.OK, "success", false, "1000");
     }
 
 

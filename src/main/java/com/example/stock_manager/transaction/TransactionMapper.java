@@ -13,6 +13,7 @@ public interface TransactionMapper {
     @Mappings({@Mapping(source = "productId", target = "product.id")})
     Transaction toTransaction(TransactionDTO TransactionDTO);
 
+    @Mappings({@Mapping(source = "product.id", target = "productId")})
     TransactionDTO toTransactionDTO(Transaction Transaction);
 
     List<TransactionDTO> toTransactionDTOS(List<Transaction> Transactions);
